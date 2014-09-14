@@ -75,7 +75,7 @@ public class TextBuddy {
 
 	// These are the possible command types
 	private enum Command {
-		ADD, DISPLAY, DELETE, CLEAR, EXIT, INVALID
+		ADD, DISPLAY, DELETE, CLEAR, EXIT, INVALID, SORT, SEARCH
 	}
 	
 	public static void main(String[] args) {
@@ -121,6 +121,10 @@ public class TextBuddy {
 			return Command.CLEAR;
 		} else if (commandType.equals("exit")) {
 			return Command.EXIT;
+		} else if (commandType.equals("sort")) {
+			return Command.SORT;
+		} else if (commandType.equals("search")) {
+			return Command.SEARCH;
 		} else {
 			return Command.INVALID;
 		}
@@ -155,6 +159,14 @@ public class TextBuddy {
 				
 			case EXIT:
 				exit();
+				break;
+				
+			case SORT:
+				sort();
+				break;
+				
+			case SEARCH:
+				search(details);
 				break;
 				
 			default:
@@ -294,7 +306,7 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
+	 * Method sorts tasks keyed in by user alphabetically
 	 */
 	private static void sort() {
 		 String[] taskListArray = taskList.toArray(new String[taskList.size()]);
@@ -306,22 +318,38 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
+	 * Method searches for word in the file and return the lines containing that word.
 	 * @param word
-	 * @return
+	 * @return A linkedList with lines containing the searched word
 	 */
-	private static LinkedList search(String word) {
+	private static LinkedList search(String details) {
+		String wordToSearch = removeSearchCommandWord(details);
 		LinkedList<String> searchedTasks = new LinkedList<String>();
-		for (int index = 0; index < taskList.size(); index++) {
-			int intIndex = taskList.get(index).indexOf(word);
-			if(intIndex == - 1){
-				//System.out.println("Hello not found");
-			}else{
-				showToUser(taskList.get(index));
-				searchedTasks.add(taskList.get(index));
+		
+		if (validSearchWord(wordToSearch)) {
+			for (int index = 0; index < taskList.size(); index++) {
+				int intIndex = taskList.get(index).indexOf(wordToSearch);
+				if(intIndex == - 1){
+					//System.out.println("Hello not found");
+				}else{
+					showToUser(taskList.get(index));
+					searchedTasks.add(taskList.get(index));
+				}
 			}
 		}
 		return searchedTasks;
+	}
+	
+	private static String removeSearchCommandWord(String details) {
+		return details.substring(7);
+	}
+	
+	private static boolean validSearchWord(String wordToSearch) {
+		if (wordToSearch != null && wordToSearch.length() > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
