@@ -310,7 +310,7 @@ public class TextBuddy {
 	 * @param word
 	 * @return
 	 */
-	private static String search(String word) {
+	private static LinkedList search(String word) {
 		LinkedList<String> searchedTasks = new LinkedList<String>();
 		for (int index = 0; index < taskList.size(); index++) {
 			int intIndex = taskList.get(index).indexOf(word);
@@ -318,10 +318,10 @@ public class TextBuddy {
 				//System.out.println("Hello not found");
 			}else{
 				showToUser(taskList.get(index));
-				
+				searchedTasks.add(taskList.get(index));
 			}
 		}
-		return "";
+		return searchedTasks;
 	}
 	
 	/**
