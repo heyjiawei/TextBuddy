@@ -72,6 +72,7 @@ public class TextBuddy {
 	// These are the starting indexes for commands
 	private static int DELETE_TEXT_STARTING_INDEX = 7;
 	private static int ADD_TEXT_STARTING_INDEX = 4;
+	private static int SEARCH_TEXT_STARTING_INDEX = 7;
 
 	// These are the possible command types
 	private enum Command {
@@ -322,7 +323,7 @@ public class TextBuddy {
 	 * @param word
 	 * @return A linkedList with lines containing the searched word
 	 */
-	private static LinkedList search(String details) {
+	private static LinkedList<String> search(String details) {
 		String wordToSearch = removeSearchCommandWord(details);
 		LinkedList<String> searchedTasks = new LinkedList<String>();
 		
@@ -341,7 +342,7 @@ public class TextBuddy {
 	}
 	
 	private static String removeSearchCommandWord(String details) {
-		return details.substring(7);
+		return details.substring(SEARCH_TEXT_STARTING_INDEX);
 	}
 	
 	private static boolean validSearchWord(String wordToSearch) {
