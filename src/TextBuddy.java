@@ -54,6 +54,8 @@ public class TextBuddy {
 	private static String MESSAGE_DELETE_TASK = "deleted from %s: \"%s\"\n";
 	private static String MESSAGE_DELETE_ERROR = "no content to delete\n";
 	private static String MESSAGE_CLEARED = "all content deleted from %s\n";
+	private static String MESSAGE_SEARCH_CONTAINING_WORD = "%d. %s \n";
+	private static String MESSGAE_SEARCH_NOT_CONTAINING_WORD = "No items contain word searched \n";
 	private static String MESSGAE_FILE_UNABLE_TO_DELETE = "Could not delete file\n";
 	private static String MESSAGE_FILE_UNABLE_TO_RENAME = "Could not rename file\n";
 
@@ -170,7 +172,7 @@ public class TextBuddy {
 				break;
 				
 			case SEARCH:
-				search(details);
+				processSearchWord(details);
 				break;
 				
 			default:
@@ -222,7 +224,7 @@ public class TextBuddy {
 	/**
 	 * Method adds task details into taskList and show users that the keyed in task has been added
 	 * @param task 
-	 * 		input key in by users
+	 * 		input keyed in by users
 	 */
 	private static void addTask(String task) {
 		taskList.addLast(task);
@@ -322,21 +324,40 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * Method searches for word in the file and return the lines containing that word.
+	 * Method displays the lines containing the word searched
+	 * @param details
+	 * 		input keyed in by users on what word to search
+	 */
+	private static void processSearchWord(String details) {
+		LinkedList <String> searchedTasks = search(details);
+		if (searchedTasks.size() == 0) {
+			showToUser(MESSGAE_SEARCH_NOT_CONTAINING_WORD);
+			
+		} else {
+			for (int index = 0; index < searchedTasks.size(); index++) {
+				showToUser(String.format(MESSAGE_SEARCH_CONTAINING_WORD, 
+								index + 1, searchedTasks.get(index)));
+			}
+		}
+	}
+	
+	/**
+	 * Method searches for word in the file. Stores all lines containing the word in a linkedList.
+	 * Returns linkedList 
 	 * @param word
+	 * 		input keyed in by users on what word to search
 	 * @return A linkedList with lines containing the searched word
 	 */
 	private static LinkedList<String> search(String details) {
 		String wordToSearch = removeSearchCommandWord(details);
-		LinkedList<String> searchedTasks = new LinkedList<String>();
+		LinkedList <String> searchedTasks = new LinkedList<String>();
 		
 		if (validSearchWord(wordToSearch)) {
 			for (int index = 0; index < taskList.size(); index++) {
-				int intIndex = taskList.get(index).indexOf(wordToSearch);
-				if(intIndex == SEARCH_TEXT_DO_NOT_EXIST){
-					//System.out.println("Hello not found");
+				int intIndex = taskList.get(index).indexOf(wordToSearch); //naming issue
+				if(intIndex == SEARCH_TEXT_DO_NOT_EXIST){ // can refactor
+					
 				}else{
-					showToUser(taskList.get(index));
 					searchedTasks.add(taskList.get(index));
 				}
 			}
