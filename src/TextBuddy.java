@@ -73,6 +73,9 @@ public class TextBuddy {
 	private static int DELETE_TEXT_STARTING_INDEX = 7;
 	private static int ADD_TEXT_STARTING_INDEX = 4;
 	private static int SEARCH_TEXT_STARTING_INDEX = 7;
+	
+	// These is used to check if word exists in line
+	private static int SEARCH_TEXT_DO_NOT_EXIST = -1;
 
 	// These are the possible command types
 	private enum Command {
@@ -330,7 +333,7 @@ public class TextBuddy {
 		if (validSearchWord(wordToSearch)) {
 			for (int index = 0; index < taskList.size(); index++) {
 				int intIndex = taskList.get(index).indexOf(wordToSearch);
-				if(intIndex == - 1){
+				if(intIndex == SEARCH_TEXT_DO_NOT_EXIST){
 					//System.out.println("Hello not found");
 				}else{
 					showToUser(taskList.get(index));
