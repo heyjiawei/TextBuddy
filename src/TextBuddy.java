@@ -110,8 +110,7 @@ public class TextBuddy {
 	
 	/** Determine the command type entered by the user
 	 * 
-	 * @param commandType 
-	 * 		command word entered by the user
+	 * @param commandType The command word entered in by the user
 	 * @return a command stated in enum Command
 	 */
 	private static Command determineCommandType(String commandType) {
@@ -136,11 +135,11 @@ public class TextBuddy {
 		}
 	}
 
-	/** A method to execute a command based on the command type. This method 
+	/**
+	 *  A method to execute a command based on the command type. This method 
 	 * calls method determineCommandType to handle each of the command type.
 	 * 
-	 * @param details 
-	 * 		task details key in by users
+	 * @param details Task details keyed in by users
 	 */
 	private static void executeCommand(String details) {
 		String userCommand = getFirstWord(details);
@@ -181,11 +180,10 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * A method to add an item to the list, which will then be stored in taskList
+	 * Method to add an item to the list.
 	 * The method lists down the procedures taken to add an item to the list.
 	 * 
-	 * @param task 
-	 * 		Add command and details of what to be added that are key in by users
+	 * @param task The add command and details of what to be added that are key in by users
 	 */
 	private static void processAddTask(String task) {
 		task = task.substring(ADD_TEXT_STARTING_INDEX);
@@ -199,9 +197,8 @@ public class TextBuddy {
 	
 	/**
 	 * Method checks if task to be added is a valid
-	 * @param task
-	 * 		checks if task details length is more than 1 character
-	 * @return true if is it valid, false if it is invalid
+	 * @param task checks if task details length is more than 1 character
+	 * @return true if is it valid task, false otherwise
 	 */
 	private static boolean isValidAddTask(String task) {
 		if (task.length() >= 1) {
@@ -212,8 +209,9 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
-	 * @param task
+	 * Method deletes an item from the list, taskList.
+	 * The method lists down the procedures taken to delete an item on the list.
+	 * @param task string primitive number. The task number in taskList to be deleted.
 	 */
 	private static void processDeleteTask(String task) {
 		task = task.substring(DELETE_TEXT_STARTING_INDEX);
@@ -228,9 +226,9 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
-	 * @param task
-	 * @return
+	 * Method checks whether task is a valid task
+	 * @param task a string primitive number
+	 * @return true if it is a valid task existing in list, false otherwise
 	 */
 	private static boolean isValidDeleteTask(String task) {
 		if (isInteger(task) && 
@@ -243,7 +241,7 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
+	 * Method displays all tasks in taskList in a listed order
 	 */
 	private static void display() {
 		if (taskList.isEmpty()) {
@@ -258,7 +256,7 @@ public class TextBuddy {
 	}
 
 	/**
-	 * 
+	 * Method clears taskList
 	 */
 	private static void clear() {
 		taskList = new LinkedList<String>();
@@ -266,7 +264,7 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
+	 * Method exits programme
 	 */
 	private static void exit() {
 		save();
@@ -275,7 +273,7 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
+	 * Method saves information into a file
 	 */
 	private static void save() {
 		if (fileExists(fileReference)) {
@@ -300,8 +298,7 @@ public class TextBuddy {
 	
 	/**
 	 * Method displays the lines containing the word searched
-	 * @param details
-	 * 		input keyed in by users on what word to search
+	 * @param details input keyed in by users on what word to search
 	 */
 	private static void processSearchWord(String details) {
 		LinkedList <String> searchedTasks = search(details);
@@ -317,10 +314,9 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * Method searches for word in the file. Stores all lines containing the word in a linkedList.
-	 * Returns linkedList 
-	 * @param word
-	 * 		input keyed in by users on what word to search
+	 * Method searches for word in the file and stores all lines 
+	 * containing the word to be searched in a linkedList.
+	 * @param details input keyed in by users on what word to search
 	 * @return A linkedList with lines containing the searched word
 	 */
 	private static LinkedList<String> search(String details) {
@@ -341,12 +337,14 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
-	 * @param wordToSearch
-	 * @return
+	 * Method checks whether input word to be search is a valid word, or a word to begin with
+	 * @param wordToSearch a word to be searched
+	 * @return true if word is a valid word, false otherwise
 	 */
 	private static boolean validSearchWord(String wordToSearch) {
-		if (wordToSearch != null && wordToSearch.length() > 0) {
+		if (wordToSearch != null && 
+			wordToSearch.length() > 0 &&
+			!wordToSearch.contains(" ")) {
 			return true;
 		} else {
 			return false;
@@ -354,9 +352,9 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
-	 * @param givenFile
-	 * @return
+	 * Method checks if file exists
+	 * @param givenFile file to be checked for existance
+	 * @return true if file exists, false otherwise
 	 */
 	private static boolean fileExists(File givenFile) {
 		if (givenFile.isFile()) {
@@ -366,12 +364,9 @@ public class TextBuddy {
 		}
 	}
 	
-	// create a temp file to save all information
-	// followed by deleting original file and
-	// renaming temp file to original file
 	/**
-	 * 
-	 * @param existingFile
+	 * Method saves all information into the file provided
+	 * @param existingFile file to save all tasks in
 	 */
 	private static void saveTempFile(File existingFile) {
 		try {
@@ -397,10 +392,10 @@ public class TextBuddy {
 		}
 	}
 		
-	// save all information into a new file
 	/**
-	 * 
-	 * @param filename
+	 * Creates a new file with the filename provided. 
+	 * File will save all current task in taskList.
+	 * @param filename name of file
 	 */
 	private static void createNewFile(File filename) {
 		try {
@@ -418,9 +413,9 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
-	 * @param details
-	 * @return
+	 * Method retrieves the first word in the line keyed in by user
+	 * @param details the line keyed in by user
+	 * @return the first word in the line keyed in by user
 	 */
 	private static String getFirstWord(String details) {
 		String[] parts = details.split(" ");
@@ -429,17 +424,17 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * 
-	 * @param toShow
+	 * Method shows user messages
+	 * @param toShow message to be printed in command line
 	 */
 	private static void showToUser(String toShow) {
 		System.out.print(toShow);
 	}
 	
 	/**
-	 * 
-	 * @param input
-	 * @return
+	 * Method checks whether input parsed in is an integer
+	 * @param input a string primitive number
+	 * @return true if input is an integer, false otherwise
 	 */
 	private static boolean isInteger( String input ) {
 	    try {
@@ -463,9 +458,8 @@ public class TextBuddy {
 		return name.toString();
 	}
 	
-	// uses BufferReader to read given file
 	/**
-	 * 
+	 * Method reads existing data from file and adds them into taskList
 	 */
 	private static void loadDataFromFile() {
 		try {
@@ -483,9 +477,8 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * Method updates file by adding previous text in file into this file's taskList
-	 * @param line
-	 *		read in by bufferRead in the sequence of "index. task"
+	 * Method updates file by adding text parsed into this file's taskList
+	 * @param line read in by bufferRead in the sequence of "index. task"
 	 */
 	private static void updateTaskList(String line) {
 		int textStartingPoint = line.indexOf(".");
