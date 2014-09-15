@@ -181,7 +181,6 @@ public class TextBuddy {
 	
 	/**
 	 * Method to add an item to the list.
-	 * The method lists down the procedures taken to add an item to the list.
 	 * 
 	 * @param task The add command and details of what to be added that are key in by users
 	 */
@@ -210,7 +209,6 @@ public class TextBuddy {
 	
 	/**
 	 * Method deletes an item from the list, taskList.
-	 * The method lists down the procedures taken to delete an item on the list.
 	 * @param task string primitive number. The task number in taskList to be deleted.
 	 */
 	private static void processDeleteTask(String task) {
