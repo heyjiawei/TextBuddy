@@ -188,23 +188,13 @@ public class TextBuddy {
 	 * 		Add command and details of what to be added that are key in by users
 	 */
 	private static void processAddTask(String task) {
-		task = removeAddWord(task);
+		task = task.substring(ADD_TEXT_STARTING_INDEX);
 		if (isValidAddTask(task)) {
-			addTask(task);
+			taskList.addLast(task);
+			showToUser(String.format(MESSAGE_ADDED, filename, task));
 		} else {
 			throw new Error(MESSAGE_ADDED_ERROR);
 		}	
-	}
-	
-	/**
-	 * Method removes command word "add" from task key in by users
-	 * @param details
-	 * 		input key in by users
-	 * @return task details key in by users without command word "add"
-	 */
-	private static String removeAddWord(String details) {
-		details = details.substring(ADD_TEXT_STARTING_INDEX);
-		return details;
 	}
 	
 	/**
@@ -222,26 +212,16 @@ public class TextBuddy {
 	}
 	
 	/**
-	 * Method adds task details into taskList and show users that the keyed in task has been added
-	 * @param task 
-	 * 		input keyed in by users
-	 */
-	private static void addTask(String task) {
-		taskList.addLast(task);
-		showToUser(String.format(MESSAGE_ADDED, filename, task));
-	}
-	
-	/**
 	 * 
 	 * @param task
 	 */
 	private static void processDeleteTask(String task) {
-		task = removeDeleteWord(task);
-		if (isInteger(task) && 
-			Integer.parseInt(task) > 0 &&
-			Integer.parseInt(task) <= taskList.size()) {
+		task = task.substring(DELETE_TEXT_STARTING_INDEX);
+		if (isValidDeleteTask(task)) {
 			int taskNumber = Integer.parseInt(task);
-			deleteTask(taskNumber);
+			String removedTask = taskList.get(taskNumber - 1);
+			taskList.remove(taskNumber - 1);
+			showToUser(String.format(MESSAGE_DELETE_TASK, filename, removedTask));
 		} else {
 			throw new Error(MESSAGE_DELETE_ERROR);
 		}
@@ -249,22 +229,17 @@ public class TextBuddy {
 	
 	/**
 	 * 
-	 * @param details
+	 * @param task
 	 * @return
 	 */
-	private static String removeDeleteWord(String details) {
-		details = details.substring(DELETE_TEXT_STARTING_INDEX);
-		return details;
-	}
-	
-	/**
-	 * 
-	 * @param taskNumber
-	 */
-	private static void deleteTask(int taskNumber) {
-		String removedTask = taskList.get(taskNumber - 1);
-		taskList.remove(taskNumber - 1);
-		showToUser(String.format(MESSAGE_DELETE_TASK, filename, removedTask));
+	private static boolean isValidDeleteTask(String task) {
+		if (isInteger(task) && 
+			Integer.parseInt(task) > 0 &&
+			Integer.parseInt(task) <= taskList.size()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
@@ -349,7 +324,7 @@ public class TextBuddy {
 	 * @return A linkedList with lines containing the searched word
 	 */
 	private static LinkedList<String> search(String details) {
-		String wordToSearch = removeSearchCommandWord(details);
+		String wordToSearch = details.substring(SEARCH_TEXT_STARTING_INDEX);
 		LinkedList <String> searchedTasks = new LinkedList<String>();
 		
 		if (validSearchWord(wordToSearch)) {
@@ -365,10 +340,11 @@ public class TextBuddy {
 		return searchedTasks;
 	}
 	
-	private static String removeSearchCommandWord(String details) {
-		return details.substring(SEARCH_TEXT_STARTING_INDEX);
-	}
-	
+	/**
+	 * 
+	 * @param wordToSearch
+	 * @return
+	 */
 	private static boolean validSearchWord(String wordToSearch) {
 		if (wordToSearch != null && wordToSearch.length() > 0) {
 			return true;
@@ -399,7 +375,7 @@ public class TextBuddy {
 	 */
 	private static void saveTempFile(File existingFile) {
 		try {
-			File tempFile = createTempFile();
+			File tempFile = new File(fileReference.getAbsolutePath() + ".tmp");
 			BufferedWriter pw = new BufferedWriter(new FileWriter(tempFile));
 			for (int i = 0; i < taskList.size(); i++) {
 				pw.write(i + 1 + ". " + taskList.get(i));
@@ -443,15 +419,6 @@ public class TextBuddy {
 	
 	/**
 	 * 
-	 * @return
-	 */
-	private static File createTempFile() {
-		File tempFile = new File(fileReference.getAbsolutePath() + ".tmp");
-		return tempFile;
-	}
-	
-	/**
-	 * 
 	 * @param details
 	 * @return
 	 */
@@ -483,11 +450,10 @@ public class TextBuddy {
 	    }
 	}
 	
-	// get file name from string array
 	/**
-	 * 
-	 * @param str
-	 * @return
+	 * Method retrieves name of file parsed into argument
+	 * @param str string array of name of file parsed into argument
+	 * @return name of file parsed into argument
 	 */
 	private static String getFileName(String[] str) {
 		StringBuilder name = new StringBuilder();
@@ -516,11 +482,10 @@ public class TextBuddy {
 		}
 	}
 	
-	// add previous text in file into temporary file's list of text
 	/**
 	 * Method updates file by adding previous text in file into this file's taskList
 	 * @param line
-	 *		lines read in by bufferReader. In the sequence of "index. task"
+	 *		read in by bufferRead in the sequence of "index. task"
 	 */
 	private static void updateTaskList(String line) {
 		int textStartingPoint = line.indexOf(".");
