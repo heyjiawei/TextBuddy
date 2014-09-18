@@ -77,7 +77,7 @@ public class TextBuddy {
 	private static int SEARCH_TEXT_STARTING_INDEX = 7;
 	
 	// These is used to check if word exists in line
-	private static int SEARCH_TEXT_DO_NOT_EXIST = -1;
+	private static int SEARCH_INDEX_DO_NOT_EXIST = -1;
 
 	// These are the possible command types
 	private enum Command {
@@ -184,7 +184,7 @@ public class TextBuddy {
 	 * 
 	 * @param task The add command and details of what to be added that are key in by users
 	 */
-	private static void processAddTask(String task) {
+	public static void processAddTask(String task) {
 		task = task.substring(ADD_TEXT_STARTING_INDEX);
 		if (isValidAddTask(task)) {
 			taskList.addLast(task);
@@ -199,7 +199,7 @@ public class TextBuddy {
 	 * @param task checks if task details length is more than 1 character
 	 * @return true if is it valid task, false otherwise
 	 */
-	private static boolean isValidAddTask(String task) {
+	public static boolean isValidAddTask(String task) {
 		if (task.length() >= 1) {
 			return true;
 		} else {
@@ -211,7 +211,7 @@ public class TextBuddy {
 	 * Method deletes an item from the list, taskList.
 	 * @param task string primitive number. The task number in taskList to be deleted.
 	 */
-	private static void processDeleteTask(String task) {
+	public static void processDeleteTask(String task) {
 		task = task.substring(DELETE_TEXT_STARTING_INDEX);
 		if (isValidDeleteTask(task)) {
 			int taskNumber = Integer.parseInt(task);
@@ -228,7 +228,7 @@ public class TextBuddy {
 	 * @param task a string primitive number
 	 * @return true if it is a valid task existing in list, false otherwise
 	 */
-	private static boolean isValidDeleteTask(String task) {
+	public static boolean isValidDeleteTask(String task) {
 		if (isInteger(task) && 
 			Integer.parseInt(task) > 0 &&
 			Integer.parseInt(task) <= taskList.size()) {
@@ -317,17 +317,15 @@ public class TextBuddy {
 	 * @param details input keyed in by users on what word to search
 	 * @return A linkedList with lines containing the searched word
 	 */
-	private static LinkedList<String> search(String details) {
+	public static LinkedList<String> search(String details) {
 		String wordToSearch = details.substring(SEARCH_TEXT_STARTING_INDEX);
 		LinkedList <String> searchedTasks = new LinkedList<String>();
 		
 		if (validSearchWord(wordToSearch)) {
 			for (int index = 0; index < taskList.size(); index++) {
-				int intIndex = taskList.get(index).indexOf(wordToSearch); //naming issue
-				if(intIndex == SEARCH_TEXT_DO_NOT_EXIST){ // can refactor
-					
-				}else{
-					searchedTasks.add(taskList.get(index));
+				int wordIndex = taskList.get(index).indexOf(wordToSearch);
+				if (wordIndex != SEARCH_INDEX_DO_NOT_EXIST){ 
+					searchedTasks.add(taskList.get(index));	
 				}
 			}
 		}
@@ -339,7 +337,7 @@ public class TextBuddy {
 	 * @param wordToSearch a word to be searched
 	 * @return true if word is a valid word, false otherwise
 	 */
-	private static boolean validSearchWord(String wordToSearch) {
+	public static boolean validSearchWord(String wordToSearch) {
 		if (wordToSearch != null && 
 			wordToSearch.length() > 0 &&
 			!wordToSearch.contains(" ")) {
@@ -415,7 +413,7 @@ public class TextBuddy {
 	 * @param details the line keyed in by user
 	 * @return the first word in the line keyed in by user
 	 */
-	private static String getFirstWord(String details) {
+	public static String getFirstWord(String details) {
 		String[] parts = details.split(" ");
 		String userCommand = parts[0];
 		return userCommand;
@@ -434,7 +432,7 @@ public class TextBuddy {
 	 * @param input a string primitive number
 	 * @return true if input is an integer, false otherwise
 	 */
-	private static boolean isInteger( String input ) {
+	public static boolean isInteger( String input ) {
 	    try {
 	        Integer.parseInt(input);
 	        return true;
@@ -448,7 +446,7 @@ public class TextBuddy {
 	 * @param str string array of name of file parsed into argument
 	 * @return name of file parsed into argument
 	 */
-	private static String getFileName(String[] str) {
+	public static String getFileName(String[] str) {
 		StringBuilder name = new StringBuilder();
 		for (int i = 0; i < str.length; i++) {
 			name.append(str[i]);
